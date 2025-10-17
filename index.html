@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for weather dashboard */
+        body {
+            background-color: #f1f1f1;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .weather-icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .weather-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .toggle-button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Weather Dashboard</h1>
+        <div class="d-flex justify-content-center">
+            <select id="citySelect" class="form-select" onchange="updateWeather()">
+                <option value="London">London</option>
+                <option value="New York">New York</option>
+                <option value="Tokyo">Tokyo</option>
+            </select>
+        </div>
+        <div id="weatherCards" class="row"></div>
+    </div>
+
+    <script>
+        const cities = {
+            "London": 0,
+            "New York": 1,
+            "Tokyo": 2
+        };
+
+        const weatherData = {
+            "cities": [{
+                    "name": "London",
+                    "temperature": 20,
+                    "humidity": 70,
+                    "windSpeed": 10,
+                    "icon": "sunny-icon.svg",
+                    "forecast": [{
+                            "day": "Tomorrow",
+                            "temperature": 22,
+                            "icon": "sunny-icon.svg"
+                        },
+                        {
+                            "day": "Day after tomorrow",
+                            "temperature": 24,
+                            "icon": "cloudy-icon.svg"
+                        },
+                        {
+                            "day": "Next day",
+                            "temperature": 23,
+                            "icon": "sunny-icon.svg"
+                        }
+                    ]
+                },
+                {
+                    "name": "New York",
+                    "temperature": 25,
+                    "humidity": 65,
+                    "windSpeed": 15,
+                    "icon": "cloudy-icon.svg",
+                    "forecast": [{
+                            "day": "Tomorrow",
+                            "temperature": 27,
+                            "icon": "cloudy-icon.svg"
+                        },
+                        {
+                            "day": "Day after tomorrow",
+                            "temperature": 26,
+                            "icon": "sunny-icon.svg"
+                        },
+                        {
+                            "day": "Next day",
+                            "temperature": 28,
+                            "icon": "cloudy-icon.svg"
+                        }
+                    ]
+                },
+                {
+                    "name": "Tokyo",
+                    "temperature": 30,
+                    "humidity": 75,
+                    "windSpeed": 12,
+                    "icon": "sunny-icon.svg",
+                    "forecast": [{
+                            "day": "Tomorrow",
+                            "temperature": 32,
+                            "icon": "sunny-icon.svg"
+                        },
+                        {
+                            "day": "Day after tomorrow",
+                            "temperature": 31,
+                            "icon": "cloudy-icon.svg"
+                        },
+                        {
+                            "day": "Next day",
+                            "temperature": 33,
+                            "icon": "sunny-icon.svg"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        function updateWeather() {
+            const selectedCity = document.getElementById('citySelect').value;
+            const cityIndex = cities[selectedCity];
+            const cityData = weatherData.cities[cityIndex];
+
+            const weatherCards = document.getElementById('weatherCards');
+            weatherCards.innerHTML = '';
+
+            const card = document.createElement('div');
+            card.classList.add('card', 'col-lg-4');
+            card.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">${cityData.name}</h5>
+                    <img src="${cityData.icon}" class="weather-icon" alt="Weather Icon">
+                    <p>Temperature: ${cityData.temperature}°C</p>
+                    <div class="weather-details">
+                        <p>Humidity: ${cityData.humidity}%</p>
+                        <p>Wind Speed: ${cityData.windSpeed} km/h</p>
+                    </div>
+                </div>
+            `;
+
+            weatherCards.appendChild(card);
+
+            cityData.forecast.forEach(day => {
+                const forecastCard = document.createElement('div');
+                forecastCard.classList.add('card', 'col-lg-4');
+                forecastCard.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">${day.day}</h5>
+                        <img src="${day.icon}" class="weather-icon" alt="Weather Icon">
+                        <p>Temperature: ${day.temperature}°C</p>
+                    </div>
+                `;
+                weatherCards.appendChild(forecastCard);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateWeather);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
